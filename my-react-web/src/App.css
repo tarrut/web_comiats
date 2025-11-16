@@ -1,0 +1,280 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #020617;
+}
+
+/* MAIN LAYOUT */
+.page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px 90px;
+  overflow: hidden;
+  color: #f8fafc;
+}
+
+/* BACKGROUND LAYERS */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Base gradient always present */
+.bg-base {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 20%, #111827, #020617 75%);
+}
+
+/* Color overlay that changes per person */
+.bg-color-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.9;             /* més intens */
+  mix-blend-mode: overlay;  /* més contrast */
+}
+
+/* Delayed background image */
+.bg-photo {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.55);
+  opacity: 0.9;
+}
+
+/* ya tenías algo parecido; ajustamos un poco y añadimos fade-out */
+
+.fade-in {
+  animation: fadeInBg 0.25s ease-out forwards;
+}
+
+.fade-out {
+  animation: fadeOutBg 0.25s ease-out forwards;
+}
+
+@keyframes fadeInBg {
+  from {
+    opacity: 0;
+    transform: scale(1.01);
+  }
+  to {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOutBg {
+  from {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.01);
+  }
+}
+
+
+/* CD ANIMATION – only on click, over text, not messing with bg */
+.cd-flying-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3; /* over text */
+}
+
+.cd-flying {
+  position: absolute;
+  left: 50%;
+  top: 72%;
+  width: 220px;
+  height: 220px;
+  background: url("/images/cd.png") center / contain no-repeat;
+  filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.85));
+  transform: translate(-50%, -50%);
+  animation: cdFlyUp 1s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+@keyframes cdFlyUp {
+  0% {
+    top: 82%;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9) rotate(0deg);
+  }
+  20% {
+    opacity: 1;
+  }
+  55% {
+    top: 32%;
+    transform: translate(-50%, -50%) scale(1.05) rotate(220deg);
+  }
+  85% {
+    top: 5%;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.96) rotate(320deg);
+  }
+  100% {
+    top: -10%;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9) rotate(340deg);
+  }
+}
+
+/* MAIN CONTENT */
+.content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 540px;
+}
+
+.title {
+  font-size: 3.2rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  opacity: 0.95;
+  margin-bottom: 28px;
+}
+
+/* COUNTDOWN */
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  margin-bottom: 18px;
+}
+
+.time-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.number {
+  font-size: 2.8rem;
+  font-weight: 800;
+}
+
+.label {
+  margin-top: 4px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.85;
+}
+
+.finished {
+  margin-top: 10px;
+  font-weight: 600;
+  color: #4ade80;
+}
+
+.info-text {
+  margin-top: 24px;
+  font-size: 1rem;
+}
+
+.info-text.muted {
+  opacity: 0.75;
+  font-style: italic;
+}
+
+/* BOTTOM BUTTONS */
+.buttons {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 12px;
+  z-index: 4;
+}
+
+.btn {
+  background: rgba(148, 163, 184, 0.22);
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  color: #e5e7eb;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  background: rgba(248, 250, 252, 0.22);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.7);
+}
+
+.btn:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+/* .btn.active is styled inline from JS per person */
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .title {
+    font-size: 2.4rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    margin-bottom: 22px;
+  }
+
+  .countdown {
+    gap: 16px;
+  }
+
+  .number {
+    font-size: 2.2rem;
+  }
+
+  .cd-flying {
+    width: 180px;
+    height: 180px;
+  }
+
+  .page {
+    padding: 16px 12px 90px;
+  }
+
+  .btn {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+}
